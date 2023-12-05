@@ -16,9 +16,11 @@ completedColumns:
 
 - [test-date-of-modification-and-creation](tasks/test-date-of-modification-and-creation.md)
 - [add-modular-filters](tasks/add-modular-filters.md)
+- [encoding-for-filters](tasks/encoding-for-filters.md)
 
 ## In Progress
 
+- [determine-filter-storage-sql-or-txt-file](tasks/determine-filter-storage-sql-or-txt-file.md)
 - [figure-out-file-movement](tasks/figure-out-file-movement.md)
 
 ## Done
