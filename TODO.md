@@ -11,6 +11,7 @@ Project Description
 
 ### Todo
 
+- [ ] Add test folder  
 - [ ] Test date of modification and creation  
 
 ### In Progress
