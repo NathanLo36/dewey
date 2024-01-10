@@ -8,17 +8,19 @@ Project Description
 
 - [ ] Terminal UI  
 - [ ] Create GUI  
+- [ ] Implement logging  
 
 ### Todo
 
-- [ ] Add test folder  
-- [ ] Test date of modification and creation  
+- [ ] Redo README  
 
 ### In Progress
-
-- [ ] Determine filter storage (SQL or txt file)  
-- [ ] Figure out file movement  
+- [ ] Test date of modification and creation  
+- [ ] gitignore test directory and make test.py create test directory
 
 ### Done ✓
 
+- [x] Add test folder  
+- [x] Determine filter storage (SQL or txt file)  
+- [x] Figure out file movement  
 
