@@ -1,6 +1,8 @@
 #Project-specific
-/test
-/filters.txt
+/test/*
+!/test/test.py
+
+filters.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

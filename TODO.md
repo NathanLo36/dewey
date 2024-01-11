@@ -17,6 +17,8 @@ Project Description
 ### In Progress
 - [ ] Test date of modification and creation  
 - [ ] gitignore test directory and make test.py create test directory
+- [ ] venv setup  
+- [ ] figure out filter sorting method
 
 ### Done ✓
 
