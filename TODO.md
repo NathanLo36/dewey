@@ -13,12 +13,13 @@ Project Description
 ### Todo
 
 - [ ] Redo README  
-
-### In Progress
 - [ ] Test date of modification and creation  
 - [ ] gitignore test directory and make test.py create test directory
+
+### In Progress
 - [ ] venv setup  
-- [ ] figure out filter sorting method
+- [ ] figure out filter sorting method  
+- [ ] change paths to use pathlib  
 
 ### Done ✓
 
