@@ -1,14 +1,15 @@
 import os
 from shutil import move as move_file
 from collections.abc import Iterable
+import pathlib as pl
 
 
-
-def filter_file_list_check(file_dir: str, filters: Iterable[str]) -> list[bool]:
+def filter_file_list_check(file_dir: pl.Path, filter_list: pl.Path) -> Iterable[list[str]]:
+    path = pl.Path(file_dir)
+    filters = filter_extractor(filter_list)
     for filter in filters:
-        for file in os.listdir(file_dir):
-            if filter in file:
-
+        matching_filters = [i for i in path.glob('*.*') if ((filter in i) and i.is_file())]
+        yield(matching_filters)
 
 
 def filter_extractor(filter_file: str) -> Iterable[tuple[list[str], str]]:
