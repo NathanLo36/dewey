@@ -19,10 +19,10 @@ Project Description
 ### In Progress
 - [ ] venv setup  
 - [ ] figure out filter sorting method  
-- [ ] change paths to use pathlib  
 
 ### Done ✓
 
+- [x] change paths to use pathlib  
 - [x] Add test folder  
 - [x] Determine filter storage (SQL or txt file)  
 - [x] Figure out file movement  
