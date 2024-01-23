@@ -19,6 +19,7 @@ Project Description
 ### In Progress
 - [ ] venv setup  
 - [ ] figure out filter sorting method  
+- [ ] Create mem efficient versiont
 
 ### Done ✓
 
