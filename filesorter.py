@@ -1,72 +1,85 @@
 from shutil import move
-from collections.abc import Iterable
 from pathlib import Path
 
 
 class Filesorter:
     def __init__(self, filter_file_path: Path, current_dir: Path):
-        self.current_dir = current_dir
-        self.filters = Filesorter.extract_filters(filter_file_path)
-        self.conflicts = []
-        self.unresolved_moves = []
+        self._current_dir: Path = current_dir
+        self._filters: list[Filter] = extract_filters(filter_file_path)
+        self._conflicts: list[tuple[Path, list[Path]]] = []
+        self._unresolved_moves: list[tuple[Path, Path]] = []
 
-    @staticmethod
-    def filter_check(file_path: Path, filter: str):
-        for keyword in filter[0]:
-            if keyword in file_path.stem:
-                return True
-        return False
-
-    @staticmethod
-    def extract_filters(filter_file: Path) -> list[list[str], str]:
-        filter_list = []
-        with open(filter_file, "r") as filters:
-            for filter in filters:
-                content = filter.split("/")
-
-                keywords = content[0].split(",")
-                folder = content[1]
-
-                filter_list.append([keywords, folder])
-        return filter_list
-
-    def filter_file_list_check(self, file_dir: Path, filter_list: Path) -> None:
+    def filter_file_list_check(self) -> None:
         for file in self.current_dir.glob("*.*"):
             matching_folders = []
-            for filter in self.filters:
-                if Filesorter.filter_check(file.stem, filter):
+            for filter in self._filters:
+                if filter_check(file.stem, filter):
                     matching_folders.append(filter[1])
+
             if len(matching_folders) == 1:
-                self.unresolved_moves.append(file, matching_folders[0])
+                self._unresolved_moves.append((file, matching_folders[0]))
             elif len(matching_folders) > 1:
-                self.conflicts.append(file, matching_folders)
+                self._conflicts.append((file, matching_folders))
 
-    def change_filter_file(self, filter_file_path) -> None:
-        self.filters = Filesorter.extract_filters(filter_file_path)
+    def resolve_moves(self) -> None:
+        for action in self._unresolved_moves:
+            move_file(action[0], action[1])
 
-    def get_filters(self) -> Path:
-        return self.filters
+    def resolve_conflicts(self) -> None:
+        for action in self._conflicts:
+            print(len(action[0]))
 
-    def get_unresolved_moves(self) -> list[Path, Path]:
-        return self.unresolved_moves
 
-    def get_conflicts(self) -> list[Path, list[Path]]:
-        return self.conflicts
+    @property
+    def filters(self) -> Path:
+        return self._filters
+    
+    @filters.setter
+    def change_filter_file(self, filter_file_path: Path):
+        self._filters = extract_filters(filter_file_path)
 
-    def get_current_dir(self) -> Path:
+    @property
+    def _unresolved_moves(self) -> list[Path, Path]:
+        return self._unresolved_moves
+
+    @property
+    def _conflicts(self) -> list[Path, list[Path]]:
+        return self._conflicts
+
+    @property
+    def current_dir(self) -> Path: 
         return self.current_dir
 
-    def change_current_dir(self, current_dir) -> None:
+    @current_dir.setter
+    def current_dir(self, current_dir):
         self.current_dir = current_dir
 
-    #!MOVE TO mem eff version
-    @staticmethod
-    def filter_extractor(filter_file: Path) -> Iterable[tuple[list[str], str]]:
-        with open(filter_file, "r") as filters:
-            for filter in filters:
-                content = filter.split("/")
+class Filter:
+    def __init__(self, keywords: list[str], folder: Path):
+        self.keywords: list[str] = keywords
+        self.folder: Path = folder
 
-                keywords = content[0].split(",")
-                folder = content[1]
 
-                yield ([keywords, folder])
+def filter_check(file_path: Path, filter: str) -> bool:
+    for keyword in filter[0]:
+        if keyword in file_path.stem:
+            return True
+    return False
+
+
+def extract_filters(filter_file: Path) -> list[Filter]:
+    filter_list = []
+    with open(filter_file, "r") as filters:
+        for filter in filters:
+            content = filter.split("/")
+
+            keywords = content[0].split(",")
+            folder = content[1]
+
+            filter_list.append([keywords, folder])
+    return filter_list
+
+
+def move_file(fromloc, toloc):
+    move(fromloc, toloc)
+    # TODO add logging
