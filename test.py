@@ -23,6 +23,7 @@ def clear_test_folder(testdir) -> None:
                 print(f"Error deleting file {file_dir}: {e}")
         elif os.path.isdir(file_dir):
             try:
+                os.rmdir(file_dir)
                 print(f"Deleted dir: {file_dir}")
             except Exception as e:
                 print(f"Error deleting file {file_dir}: {e}")
@@ -45,8 +46,13 @@ def main():
 
     input("Files created. Press a key to start sorting")
 
-    # fs.sort()
+    filter_file = r"C:\Users\natef\Downloads\projects\dewey\test_filters.txt"
+    working_dir = r"C:\Users\natef\Downloads\projects\dewey\test"
 
+    fs1 = fs.Filesorter(filter_file, working_dir)
+    fs1.filter_file_list_check()
+    fs1.resolve_moves()
+    fs1.resolve_conflicts()
 
 if __name__ == "__main__":
     main()

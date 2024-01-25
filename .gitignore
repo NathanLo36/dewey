@@ -1,7 +1,5 @@
 #Project-specific
-/test/*
-!/test/test.py
-
+test/
 filters.txt
 
 # Byte-compiled / optimized / DLL files
