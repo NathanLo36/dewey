@@ -1,6 +1,7 @@
 import os
 import filesorter as fs
 from pathlib import Path
+import shutil
 
 def create_file(name: str) -> None:
     with open(name, "w") as f:
@@ -11,13 +12,13 @@ def create_dir(name: str) -> None:
     os.makedirs(name, exist_ok=True)
 
 
-def clear_test_folder(testdir) -> None:
+def clear_test_folder(testdir: Path) -> None:
     for file in os.listdir(testdir):
         file_dir = os.path.join(testdir, file)
 
         if os.path.isfile(file_dir):
             try:
-                # os.remove(file_dir)
+                os.remove(file_dir)
                 print(f"Deleted file: {file_dir}")
             except Exception as e:
                 print(f"Error deleting file {file_dir}: {e}")
@@ -29,13 +30,14 @@ def clear_test_folder(testdir) -> None:
                 print(f"Error deleting file {file_dir}: {e}")
 
 
-
 def main():
     dir = Path('.') / 'test'
     dir = dir.resolve()
     os.chdir(dir)
 
     clear_test_folder(dir)
+
+    input("Folders deleted. Press enter to continue.")
 
     create_file("test1.txt")
     create_file("test2.txt")
@@ -50,17 +52,18 @@ def main():
     create_dir("folder3")
     create_dir("folder4")
 
-    with open((Path('.') / "test_filters.txt").resolve(), "w") as test_filter:
-        
-        test_filter.write("test1|||folder1")
-        test_filter.write("test2|||folder2")
-        test_filter.write("test3|||folder3")
-        test_filter.write("test4|||folder4")
-        test_filter.write("test5|||folder1")
+    print( (dir / "test_filters.txt").resolve())
 
-    input("Files created. Press a key to start sorting")
+    with open((dir / "test_filters.txt").resolve(), "w") as test_filter:
+        test_filter.write("test1|||folder1\n")
+        test_filter.write("test2|||folder2\n")
+        test_filter.write("test3|||folder3\n")
+        test_filter.write("test4|||folder4\n")
+        test_filter.write("test5|||folder1\n")
 
-    filter_file = r"C:\Users\natef\Downloads\projects\dewey\test_filters.txt"
+    input("Files created. Press enter to start sorting")
+
+    filter_file = r"C:\Users\natef\Downloads\projects\dewey\test\test_filters.txt"
     working_dir = r"C:\Users\natef\Downloads\projects\dewey\test"
 
     fs1 = fs.Filesorter(filter_file, working_dir)

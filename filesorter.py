@@ -14,8 +14,8 @@ class Filesorter:
         for file in self._working_dir.glob("*.*"):
             matching_folders = []
             for filter in self._filters:
-                if filter_check(file.stem, filter):
-                    matching_folders.append(filter[1])
+                if filter_check(file, filter):
+                    matching_folders.append(filter.folder)
 
             if len(matching_folders) == 1:
                 self._unresolved_moves.append((file, matching_folders[0]))
@@ -62,8 +62,8 @@ class Filter:
         self.folder: Path = folder
 
 
-def filter_check(file_path: Path, filter: str) -> bool:
-    for keyword in filter[0]:
+def filter_check(file_path: Path, filter: Filter) -> bool:
+    for keyword in filter.keywords:
         if keyword in file_path.stem:
             return True
     return False
@@ -73,7 +73,7 @@ def extract_filters(filter_file: Path) -> list[Filter]:
     filter_list = []
     with open(filter_file, "r") as filters:
         for filter in filters:
-            content = filter.split("|||")
+            content = filter.strip().split("|||")
 
             if len(content) != 2:
                 print(
@@ -89,6 +89,6 @@ def extract_filters(filter_file: Path) -> list[Filter]:
 
 
 def move_file(fromloc: Path, toloc: Path):
-    # move(str(fromloc), str(toloc))
+    move(fromloc, toloc)
     print(f"File moved from {fromloc} to {toloc}")
     # TODO add logging
