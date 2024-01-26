@@ -1,6 +1,6 @@
 import os
 import filesorter as fs
-
+from pathlib import Path
 
 def create_file(name: str) -> None:
     with open(name, "w") as f:
@@ -31,7 +31,8 @@ def clear_test_folder(testdir) -> None:
 
 
 def main():
-    dir = os.path.normcase(os.path.join(os.getcwd(), "test"))
+    dir = Path('.') / 'test'
+    dir = dir.resolve()
     os.chdir(dir)
 
     clear_test_folder(dir)
@@ -41,8 +42,21 @@ def main():
     create_file("test12.txt")
     create_file("test1-2.txt")
     create_file("test2-3.txt")
-    create_dir("test1")
-    create_dir("test2")
+    create_file("test2-test3.txt")
+    create_file("test_filters.txt")
+
+    create_dir("folder1")
+    create_dir("folder2")
+    create_dir("folder3")
+    create_dir("folder4")
+
+    with open((Path('.') / "test_filters.txt").resolve(), "w") as test_filter:
+        
+        test_filter.write("test1|||folder1")
+        test_filter.write("test2|||folder2")
+        test_filter.write("test3|||folder3")
+        test_filter.write("test4|||folder4")
+        test_filter.write("test5|||folder1")
 
     input("Files created. Press a key to start sorting")
 

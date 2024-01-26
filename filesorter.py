@@ -11,7 +11,7 @@ class Filesorter:
         self._unresolved_moves: list[tuple[Path, Path]] = []
 
     def filter_file_list_check(self) -> None:
-        for file in self.current_dir.glob("*.*"):
+        for file in self._working_dir.glob("*.*"):
             matching_folders = []
             for filter in self._filters:
                 if filter_check(file.stem, filter):
@@ -30,7 +30,6 @@ class Filesorter:
         for action in self._conflicts:
             print(action)
 
-
     @property
     def unresolved_moves(self) -> list[Path, Path]:
         return self._unresolved_moves
@@ -40,7 +39,7 @@ class Filesorter:
         return self._conflicts
 
     @property
-    def working_dir(self) -> Path: 
+    def working_dir(self) -> Path:
         return self.current_dir
 
     @working_dir.setter
@@ -50,11 +49,12 @@ class Filesorter:
     @property
     def filter_file(self) -> Path:
         return self._filter_file
-    
+
     @filter_file.setter
     def filter_file(self, filter_file) -> None:
         self._filter_file = filter_file
         self._filters = extract_filters(filter_file)
+
 
 class Filter:
     def __init__(self, keywords: list[str], folder: Path):
@@ -76,7 +76,9 @@ def extract_filters(filter_file: Path) -> list[Filter]:
             content = filter.split("|||")
 
             if len(content) != 2:
-                print("Error in filter format encountered, filter extraction cancelled.")
+                print(
+                    "Error in filter format encountered, filter extraction cancelled."
+                )
                 return []
 
             keywords = content[0].split(",")
@@ -87,6 +89,6 @@ def extract_filters(filter_file: Path) -> list[Filter]:
 
 
 def move_file(fromloc: Path, toloc: Path):
-    move(fromloc, toloc)
+    # move(str(fromloc), str(toloc))
     print(f"File moved from {fromloc} to {toloc}")
     # TODO add logging
