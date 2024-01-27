@@ -26,9 +26,13 @@ class Filesorter:
         for action in self._unresolved_moves:
             move_file(action[0], action[1])
 
-    def resolve_conflicts(self) -> None:
+    def list_conflicts(self) -> None:
         for action in self._conflicts:
-            print(action)
+            
+            print(f"File: {action[0]} -> Folders: ", end='')
+            for folder in action[1]:
+                print(folder, end=' ')
+            print("\n")
 
     @property
     def unresolved_moves(self) -> list[Path, Path]:
@@ -82,7 +86,7 @@ def extract_filters(filter_file: Path) -> list[Filter]:
                 return []
 
             keywords = content[0].split(",")
-            folder = Path(content[1])
+            folder = Path(content[1]).resolve()
 
             filter_list.append(Filter(keywords, folder))
     return filter_list
