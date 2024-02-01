@@ -17,8 +17,6 @@ def main():
     dir = Path(".").resolve()
     os.chdir(dir)
 
-    # print(dir)
-    # clear_test_folder(dir)
     test_dir = dir / "test"
 
     if test_dir.is_dir():
@@ -56,7 +54,7 @@ def main():
     working_dir = test_dir
 
     fs1 = fs.Filesorter(filter_file, working_dir)
-    fs1.filter_file_list_check()
+    fs1.sort()
     fs1.resolve_moves()
     fs1.list_conflicts()
 

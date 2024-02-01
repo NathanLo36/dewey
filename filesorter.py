@@ -85,7 +85,7 @@ def extract_filters(filter_file: Path) -> list[Filter]:
     filter_list = []
     with open(filter_file, "r") as filters:
         for filter in filters:
-            filter_list.append(extract_filters(filter))
+            filter_list.append(extract_filter(filter))
     return filter_list
 
 
