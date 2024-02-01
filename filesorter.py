@@ -27,11 +27,12 @@ class Filesorter:
             move_file(action[0], action[1])
 
     def list_conflicts(self) -> None:
+        print("Unresolved conflicts:")
         for action in self._conflicts:
             
-            print(f"File: {action[0]} -> Folders: ", end='')
+            print(f"{action[0]} -> ", end='')
             for folder in action[1]:
-                print(folder, end=' ')
+                print(f"[{folder}]", end=' ')
             print("\n")
 
     @property
@@ -95,4 +96,3 @@ def extract_filters(filter_file: Path) -> list[Filter]:
 def move_file(fromloc: Path, toloc: Path):
     move(fromloc, toloc)
     print(f"File moved from {fromloc} to {toloc}")
-    # TODO add logging

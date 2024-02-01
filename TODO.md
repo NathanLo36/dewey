@@ -8,23 +8,24 @@ Project Description
 
 - [ ] Terminal UI  
 - [ ] Create GUI  
-- [ ] Implement logging  
 
 ### Todo
 
-- [ ] Redo README  
-- [ ] Test date of modification and creation  
-- [ ] gitignore test directory and make test.py create test directory
+- [ ] venv setup  
+- [ ] Create mem efficient version  
 
 ### In Progress
-- [ ] venv setup  
-- [ ] figure out filter sorting method  
-- [ ] Create mem efficient version
+
+- [ ] Implement logging  
 
 ### Done ✓
 
+- [x] figure out filter sorting method  
+- [x] Test date of modification and creation  
+- [x] Redo README  
 - [x] change paths to use pathlib  
 - [x] Add test folder  
 - [x] Determine filter storage (SQL or txt file)  
+- [x] gitignore test directory and make test.py create test directory  
 - [x] Figure out file movement  
 

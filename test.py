@@ -3,6 +3,7 @@ import filesorter as fs
 from pathlib import Path
 import shutil
 
+
 def create_file(name: str) -> None:
     with open(name, "w") as f:
         f.write(name + " created")
@@ -12,38 +13,20 @@ def create_dir(name: str) -> None:
     os.makedirs(name, exist_ok=True)
 
 
-# def clear_test_folder(testdir: Path) -> None:
-#     for file in os.listdir(testdir):
-#         file_dir = os.path.join(testdir, file)
-
-#         if os.path.isfile(file_dir):
-#             try:
-#                 os.remove(file_dir)
-#                 print(f"Deleted file: {file_dir}")
-#             except Exception as e:
-#                 print(f"Error deleting file {file_dir}: {e}")
-#         elif os.path.isdir(file_dir):
-#             try:
-#                 os.rmdir(file_dir)
-#                 print(f"Deleted dir: {file_dir}")
-#             except Exception as e:
-#                 print(f"Error deleting file {file_dir}: {e}")
-
-
 def main():
-    dir = Path('.').resolve()
+    dir = Path(".").resolve()
     os.chdir(dir)
 
     # print(dir)
     # clear_test_folder(dir)
-    test_dir = dir / 'test'
+    test_dir = dir / "test"
 
     if test_dir.is_dir():
         shutil.rmtree(test_dir)
 
     input("Folders deleted. Press enter to continue.")
 
-    create_dir('test')
+    create_dir("test")
 
     os.chdir(test_dir)
 
@@ -69,13 +52,14 @@ def main():
 
     input("Files created. Press enter to start sorting")
 
-    filter_file = test_dir / 'test_filters.txt'
+    filter_file = test_dir / "test_filters.txt"
     working_dir = test_dir
 
     fs1 = fs.Filesorter(filter_file, working_dir)
     fs1.filter_file_list_check()
     fs1.resolve_moves()
     fs1.list_conflicts()
+
 
 if __name__ == "__main__":
     main()
