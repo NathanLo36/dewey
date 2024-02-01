@@ -1,5 +1,6 @@
 from shutil import move
 from pathlib import Path
+from dataclasses import dataclass
 
 
 class Filesorter:
@@ -60,11 +61,10 @@ class Filesorter:
         self._filter_file = filter_file
         self._filters = extract_filters(filter_file)
 
-
+@dataclass(init=True)
 class Filter:
-    def __init__(self, keywords: list[str], folder: Path):
-        self.keywords: list[str] = keywords
-        self.folder: Path = folder
+    keywords: list[str]
+    folder: Path
 
 
 def filter_check(file_path: Path, filter: Filter) -> bool:
