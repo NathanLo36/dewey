@@ -3,6 +3,17 @@ from pathlib import Path
 from dataclasses import dataclass
 
 
+@dataclass(init = True)
+class Filter:
+    keywords: list[str]
+    folder: Path
+
+@dataclass(init = True)
+class Move:
+    from_path: Path
+    to_path: Path
+
+
 class Filesorter:
     def __init__(self, filter_file_path: str, working_dir: str):
         self._working_dir: Path = Path(working_dir)
@@ -11,11 +22,11 @@ class Filesorter:
         self._conflicts: list[tuple[Path, list[Path]]] = []
         self._unresolved_moves: list[tuple[Path, Path]] = []
 
-    def filter_file_list_check(self) -> None:
+    def sort(self) -> None:
         for file in self._working_dir.glob("*.*"):
             matching_folders = []
             for filter in self._filters:
-                if filter_check(file, filter):
+                if self.filter_check(file, filter):
                     matching_folders.append(filter.folder)
 
             if len(matching_folders) == 1:
@@ -36,6 +47,14 @@ class Filesorter:
                 print(f"[{folder}]", end=' ')
             print("\n")
 
+    def filter_check(self, file_path: Path, filter: Filter) -> bool:
+        if file_path == self._filter_file:
+            return False
+        for keyword in filter.keywords:
+            if keyword in file_path.stem:
+                return True
+        return False
+    
     @property
     def unresolved_moves(self) -> list[Path, Path]:
         return self._unresolved_moves
@@ -61,36 +80,25 @@ class Filesorter:
         self._filter_file = filter_file
         self._filters = extract_filters(filter_file)
 
-@dataclass(init=True)
-class Filter:
-    keywords: list[str]
-    folder: Path
-
-
-def filter_check(file_path: Path, filter: Filter) -> bool:
-    for keyword in filter.keywords:
-        if keyword in file_path.stem:
-            return True
-    return False
-
 
 def extract_filters(filter_file: Path) -> list[Filter]:
     filter_list = []
     with open(filter_file, "r") as filters:
         for filter in filters:
-            content = filter.strip().split("|||")
-
-            if len(content) != 2:
-                print(
-                    "Error in filter format encountered, filter extraction cancelled."
-                )
-                return []
-
-            keywords = content[0].split(",")
-            folder = Path(content[1]).resolve()
-
-            filter_list.append(Filter(keywords, folder))
+            filter_list.append(extract_filters(filter))
     return filter_list
+
+
+def extract_filter(filter: str) -> Filter:
+    content = filter.strip().split("|||")
+
+    if len(content) != 2:
+        print("Error in filter format encountered, filter extraction cancelled.")
+        return []
+
+    keywords = content[0].split(",")
+    folder = Path(content[1]).resolve()
+    return Filter(keywords, folder)
 
 
 def move_file(fromloc: Path, toloc: Path):
