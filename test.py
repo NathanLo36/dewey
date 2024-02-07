@@ -35,18 +35,21 @@ def main():
     create_file("test2-3.txt")
     create_file("test2-test3.txt")
     create_file("test_filters.txt")
+    create_file("test6_test5.txt")
+    create_file("test6.txt")
 
     create_dir("folder1")
     create_dir("folder2")
     create_dir("folder3")
     create_dir("folder4")
+    create_dir("folder5")
 
     with open((test_dir / "test_filters.txt").resolve(), "w") as test_filter:
         test_filter.write("test1|||folder1\n")
         test_filter.write("test2|||folder2\n")
         test_filter.write("test3|||folder3\n")
         test_filter.write("test4|||folder4\n")
-        test_filter.write("test5|||folder1\n")
+        test_filter.write("test5,test6|||folder5\n")
 
     input("Files created. Press enter to start sorting")
 
