@@ -25,7 +25,7 @@ class Filesorter:
     def __init__(self, filter_file_path: str, working_dir: str):
         self._working_dir: Path = Path(working_dir)
         self._filter_file: Path = Path(filter_file_path)
-        self._filters: list[Filter] = self.extract_filters(self._filter_file)
+        self._filters: list[Filter] = self.extract_filters_from_file(self._filter_file)
         self._conflicts: list[Conflict] = []
         self._unresolved_moves: list[MoveAction] = []
 
@@ -84,12 +84,12 @@ class Filesorter:
     @filter_file.setter
     def filter_file(self, filter_file) -> None:
         self._filter_file = filter_file
-        self._filters = self.extract_filters(filter_file)
+        self._filters = self.extract_filters_from_file(filter_file)
     
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
 
-    def extract_filters(self, filter_file: Path) -> list[Filter]:
+    def extract_filters_from_file(self, filter_file: Path) -> list[Filter]:
         filter_list = []
         with open(filter_file, "r") as filters:
             for filter in filters:

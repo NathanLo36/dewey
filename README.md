@@ -3,7 +3,7 @@ Simple File Sorting
 
 Takes files and sorts them into folders by file name.
 
-Filters are stored in plain text in the `filters.txt` file like this:
+Filters are stored in plain text in any `.txt` file like this:
 
     keyword|||folder
     keyword2|||folder2
@@ -14,11 +14,11 @@ Such that if the keyword is in the file name, it will be designated to be put in
 
     ,/\ 
 
+Using `|||` in a keyword or a folder name is also not allowed.
+
 Folders are stored as absolute directories.
 
 The same keyword can be used for multiple folders, but this will always lead to a conflict that must be resolved manually.
-
-Using `|||` in a keyword or a folder name is also not allowed.
 
 If multiple keywords for multiple folders exist in the file name, the user shall be informed and be asked to confirm where the file should be relocated.
 
