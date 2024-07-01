@@ -23,29 +23,76 @@ class Conflict:
 
 class Filesorter:
     def __init__(self, filter_file_path: str, working_dir: str):
-        self._working_dir: Path = Path(working_dir)
-        self._filter_file: Path = Path(filter_file_path)
-        self._filters: list[Filter] = self.extract_filters_from_file(self._filter_file)
-        self._conflicts: list[Conflict] = []
-        self._unresolved_moves: list[MoveAction] = []
+        self.working_dir: Path = Path(working_dir)
+        self.filter_file: Path = Path(filter_file_path)
+        self.filters: list[Filter] = self.extract_from_config_file(self._filter_file)
+        self.conflicts: list[Conflict] = []
+        self.unresolved_moves: list[MoveAction] = []
 
+    @property
+    def unresolved_moves(self) -> list[MoveAction]:
+        return self._unresolved_moves
+    
+    @unresolved_moves.setter
+    def unresolved_moves(self, moves: list[MoveAction]):
+        self._unresolved_moves = moves
+
+    @property
+    def conflicts(self) -> list[Conflict]:
+        return self._conflicts
+    
+    @conflicts.setter
+    def conflicts(self, conflicts: list[Conflict]):
+        self._conflicts = conflicts
+
+    @property
+    def working_dir(self) -> Path:
+        return self.current_dir
+
+    @working_dir.setter
+    def working_dir(self, dir):
+        self._working_dir = dir
+
+    @property
+    def filter_file(self) -> Path:
+        return self._filter_file
+    
+    @filter_file.setter
+    def filter_file(self, file: Path):
+        self._filter_file = file
+    
+    @property
+    def filters(self) -> Path:
+        return self._filters
+    
+    @filters.setter
+    def filters(self, filter_list: list[Filter]):
+        self._filters = filter_list
+    
     def sort(self) -> None:
-        for file in self._working_dir.glob("*.*"):
+        if len(self._filters) == 0:
+            print("No filters found in file")
+            return
+
+        files = self._working_dir.glob("*.*")
+
+        for file in files:
             matching_folders = []
             for filter in self._filters:
                 if self.filter_check(file, filter):
                     matching_folders.append(filter.folder)
 
             if len(matching_folders) == 1:
-                self._unresolved_moves.append(MoveAction(file, matching_folders[0]))
+                self.unresolved_moves.append(MoveAction(file, matching_folders[0]))
             elif len(matching_folders) > 1:
-                self._conflicts.append(Conflict(file, matching_folders))
+                self.conflicts.append(Conflict(file, matching_folders))
 
     def resolve_moves(self) -> None:
-        for action in self._unresolved_moves:
-            self.move_file(action)
+        while self.unresolved_moves:
+            self.move_file(self.unresolved_moves[0])
+            self.unresolved_moves.pop(0)
 
-    def list_conflicts(self) -> None:
+    def print_conflicts(self) -> None:
         print("Unresolved conflicts:")
         for action in self._conflicts:
             print(f"{action.file_path} -> ", end="")
@@ -54,50 +101,36 @@ class Filesorter:
             print("\n")
 
     def filter_check(self, file_path: Path, filter: Filter) -> bool:
-        if file_path == self._filter_file:
+        if file_path.resolve() == self._filter_file.resolve():
             return False
         for keyword in filter.keywords:
-            if keyword in file_path.stem:
+            stem = file_path.stem
+
+            if keyword.startswith('*'):
+                keyword = keyword.lower()[1:]
+                stem = stem.lower()
+            if keyword in stem:
                 return True
         return False
-
-    @property
-    def unresolved_moves(self) -> list[MoveAction]:
-        return self._unresolved_moves
-
-    @property
-    def conflicts(self) -> list[Conflict]:
-        return self._conflicts
-
-    @property
-    def working_dir(self) -> Path:
-        return self.current_dir
-
-    @working_dir.setter
-    def working_dir(self, current_dir) -> None:
-        self.current_dir = current_dir
-
-    @property
-    def filter_file(self) -> Path:
-        return self._filter_file
-
-    @filter_file.setter
-    def filter_file(self, filter_file) -> None:
-        self._filter_file = filter_file
-        self._filters = self.extract_filters_from_file(filter_file)
     
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
 
-    def extract_filters_from_file(self, filter_file: Path) -> list[Filter]:
+    def extract_from_config_file(self, filter_file: Path) -> list[Filter]:
         filter_list = []
         with open(filter_file, "r") as filters:
             for filter in filters:
-                filter_list.append(self.extract_filter(filter))
+                extracted = self.extract_filter(filter)
+                if extracted:
+                    filter_list.append(extracted)
         return filter_list
 
     def extract_filter(self, filter: str) -> Filter:
         content = filter.strip().split("|||")
+
+        if len(content) == 0:
+            print("Empty line found, skipped")
+            return []
 
         if len(content) != 2:
             print("Error in filter format encountered, filter extraction cancelled.")
@@ -106,6 +139,4 @@ class Filesorter:
         keywords = content[0].split(",")
         folder = Path(content[1]).resolve()
         return Filter(keywords, folder)
-
-
-
+    

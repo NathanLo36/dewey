@@ -1,6 +1,4 @@
-# Project
-
-Project Description
+# dewey TODO list
 
 <em>[TODO.md spec & Kanban Board](https://bit.ly/3fCwKfM)</em>
 
@@ -20,6 +18,7 @@ Project Description
 
 ### Done ✓
 
+- [x] Implement "*" for case insensitivity
 - [x] figure out filter sorting method  
 - [x] Test date of modification and creation  
 - [x] Redo README  

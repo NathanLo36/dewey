@@ -11,4 +11,4 @@ if __name__ == "__main__":
     fs1 = fs.Filesorter(filter_file, working_dir)
     fs1.sort()
     fs1.resolve_moves()
-    fs1.list_conflicts()
+    fs1.print_conflicts()
