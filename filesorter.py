@@ -25,14 +25,14 @@ class Filesorter:
     def __init__(self, filter_file_path: str, working_dir: str):
         self.working_dir: Path = Path(working_dir)
         self.filter_file: Path = Path(filter_file_path)
-        self.filters: list[Filter] = self.extract_from_config_file(self._filter_file)
+        self.filters: list[Filter] = self.extract_from_filter_file(self._filter_file)
         self.conflicts: list[Conflict] = []
         self.unresolved_moves: list[MoveAction] = []
 
     @property
     def unresolved_moves(self) -> list[MoveAction]:
         return self._unresolved_moves
-    
+
     @unresolved_moves.setter
     def unresolved_moves(self, moves: list[MoveAction]):
         self._unresolved_moves = moves
@@ -40,7 +40,7 @@ class Filesorter:
     @property
     def conflicts(self) -> list[Conflict]:
         return self._conflicts
-    
+
     @conflicts.setter
     def conflicts(self, conflicts: list[Conflict]):
         self._conflicts = conflicts
@@ -56,20 +56,20 @@ class Filesorter:
     @property
     def filter_file(self) -> Path:
         return self._filter_file
-    
+
     @filter_file.setter
     def filter_file(self, file: Path):
         self._filter_file = file
-    
+
     @property
     def filters(self) -> Path:
         return self._filters
-    
+
     @filters.setter
     def filters(self, filter_list: list[Filter]):
         self._filters = filter_list
-    
-    def sort(self) -> None:
+
+    def find_moves(self) -> None:
         if len(self._filters) == 0:
             print("No filters found in file")
             return
@@ -100,23 +100,27 @@ class Filesorter:
                 print(f"[{folder}]", end=" ")
             print("\n")
 
+    def sort(self):
+        self.find_moves()
+        self.resolve_moves()
+
     def filter_check(self, file_path: Path, filter: Filter) -> bool:
         if file_path.resolve() == self._filter_file.resolve():
             return False
         for keyword in filter.keywords:
             stem = file_path.stem
 
-            if keyword.startswith('*'):
+            if keyword.startswith("*"):
                 keyword = keyword.lower()[1:]
                 stem = stem.lower()
             if keyword in stem:
                 return True
         return False
-    
+
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
 
-    def extract_from_config_file(self, filter_file: Path) -> list[Filter]:
+    def extract_from_filter_file(self, filter_file: Path) -> list[Filter]:
         filter_list = []
         with open(filter_file, "r") as filters:
             for filter in filters:
@@ -128,7 +132,7 @@ class Filesorter:
     def extract_filter(self, filter: str) -> Filter:
         content = filter.strip().split("|||")
 
-        if len(content) == 0:
+        if len(content) == 1 and content[0] == "":
             print("Empty line found, skipped")
             return []
 
@@ -139,4 +143,3 @@ class Filesorter:
         keywords = content[0].split(",")
         folder = Path(content[1]).resolve()
         return Filter(keywords, folder)
-    

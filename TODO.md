@@ -15,6 +15,7 @@
 ### In Progress
 
 - [ ] Implement logging  
+- [ ] Implement Windows file selector
 
 ### Done ✓
 
