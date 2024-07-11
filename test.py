@@ -48,6 +48,7 @@ def main():
 
 
     with open((test_dir / "test_filters.txt").resolve(), "w") as test_filter:
+        test_filter.write(f"{test_dir}\n\n")
         test_filter.write("test1|||folder1\n")
         test_filter.write("test2|||folder2\n")
         test_filter.write("test3|||folder3\n")

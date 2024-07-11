@@ -15,10 +15,10 @@
 ### In Progress
 
 - [ ] Implement logging  
-- [ ] Implement Windows file selector
 
 ### Done ✓
 
+- [x] Implement Windows file selector
 - [x] Implement "*" for case insensitivity
 - [x] figure out filter sorting method  
 - [x] Test date of modification and creation  

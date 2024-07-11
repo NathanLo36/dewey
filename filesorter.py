@@ -22,10 +22,10 @@ class Conflict:
 
 
 class Filesorter:
-    def __init__(self, filter_file_path: str, working_dir: str):
-        self.working_dir: Path = Path(working_dir)
+    def __init__(self, filter_file_path: str):
+        self.working_dir: Path = None
         self.filter_file: Path = Path(filter_file_path)
-        self.filters: list[Filter] = self.extract_from_filter_file(self._filter_file)
+        self.filters: list[Filter] = self.configure(self._filter_file)
         self.conflicts: list[Conflict] = []
         self.unresolved_moves: list[MoveAction] = []
 
@@ -120,26 +120,36 @@ class Filesorter:
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
 
-    def extract_from_filter_file(self, filter_file: Path) -> list[Filter]:
+    def configure(self, filter_file: Path) -> list[Filter]:
         filter_list = []
-        with open(filter_file, "r") as filters:
-            for filter in filters:
+        with open(filter_file, "r", encoding="utf=8") as config:
+            working_dir = Path(config.readline().strip())
+            if not working_dir.exists():
+                raise ValueError("First line is not a valid path")
+            else:
+                self.working_dir = working_dir
+            
+            for filter in config:
                 extracted = self.extract_filter(filter)
                 if extracted:
                     filter_list.append(extracted)
         return filter_list
 
-    def extract_filter(self, filter: str) -> Filter:
+    def extract_filter(self, filter: str) -> Filter | None:
         content = filter.strip().split("|||")
 
         if len(content) == 1 and content[0] == "":
             print("Empty line found, skipped")
-            return []
+            return None
 
         if len(content) != 2:
-            print("Error in filter format encountered, filter extraction cancelled.")
-            return []
+            print("Error in filter format encountered, skipped")
+            return None
 
         keywords = content[0].split(",")
         folder = Path(content[1]).resolve()
-        return Filter(keywords, folder)
+        if folder.exists():
+            return Filter(keywords, folder)
+        else:
+            print("Not a valid path, skipped")
+            return None
