@@ -62,7 +62,7 @@ def main():
     filter_file = test_dir / "test_filters.txt"
     working_dir = test_dir
 
-    fs1 = fs.Filesorter(filter_file, working_dir)
+    fs1 = fs.Filesorter(filter_file)
     fs1.sort()
     fs1.print_conflicts()
 
