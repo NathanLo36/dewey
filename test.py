@@ -60,7 +60,7 @@ def main():
     input("Files created. Press enter to start sorting")
 
     filter_file = test_dir / "test_filters.txt"
-    working_dir = test_dir
+
 
     fs1 = fs.Filesorter(filter_file)
     fs1.sort()
