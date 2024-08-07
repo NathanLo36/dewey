@@ -89,7 +89,11 @@ class Filesorter:
 
     def resolve_moves(self) -> None:
         while self.unresolved_moves:
-            self.move_file(self.unresolved_moves[0])
+            try:
+                self.move_file(self.unresolved_moves[0])
+            except:
+                print(f"Could not move {self.unresolved_moves[0].file_path}")
+                pass
             self.unresolved_moves.pop(0)
 
     def print_conflicts(self) -> None:
