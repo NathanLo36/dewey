@@ -143,11 +143,9 @@ class Filesorter:
         content = filter.strip().split("|||")
 
         if len(content) == 1 and content[0] == "":
-            print("Empty line found, skipped")
             return None
 
         if len(content) != 2:
-            print("Error in filter format encountered, skipped")
             return None
 
         keywords = content[0].split(",")
@@ -155,5 +153,4 @@ class Filesorter:
         if folder.exists():
             return Filter(keywords, folder)
         else:
-            print("Not a valid path, skipped")
             return None
