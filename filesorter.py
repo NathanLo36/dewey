@@ -1,4 +1,5 @@
 from shutil import move
+from shutil import Error as shutilError
 from pathlib import Path
 from dataclasses import dataclass
 
@@ -91,7 +92,7 @@ class Filesorter:
         while self.unresolved_moves:
             try:
                 self.move_file(self.unresolved_moves[0])
-            except:
+            except shutilError:
                 print(f"Could not move {self.unresolved_moves[0].file_path}")
                 pass
             self.unresolved_moves.pop(0)
