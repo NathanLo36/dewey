@@ -16,3 +16,5 @@ if __name__ == "__main__":
     fs1 = fs.Filesorter(filter_file)
     fs1.sort()
     fs1.print_conflicts()
+
+    input("Press enter to close.")

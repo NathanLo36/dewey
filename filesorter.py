@@ -143,10 +143,11 @@ class Filesorter:
     def extract_filter(self, filter: str) -> Filter | None:
         content = filter.strip().split("|||")
 
-        if len(content) == 1 and content[0] == "":
+        if len(content) == 1 and content[0] == "": #empty line
             return None
 
-        if len(content) != 2:
+        if len(content) != 2: #too many separators
+            print("Warning: Incorrect format for filter " + str(filter))
             return None
 
         keywords = content[0].split(",")
@@ -154,4 +155,5 @@ class Filesorter:
         if folder.exists():
             return Filter(keywords, folder)
         else:
+            print("Warning: Directory " + str(folder) + " does not exist")
             return None
