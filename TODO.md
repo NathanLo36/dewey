@@ -4,8 +4,6 @@
 
 ### Backlog
 
-- [ ] Terminal UI  
-- [ ] Create GUI  
 
 ### Todo
 
@@ -14,6 +12,7 @@
 
 ### In Progress
 
+- [ ] Create GUI  
 - [ ] Implement logging  
 
 ### Done ✓
