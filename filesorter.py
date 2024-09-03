@@ -23,7 +23,7 @@ class Conflict:
 
 
 class Filesorter:
-    def __init__(self, filter_file_path: str):
+    def __init__(self, filter_file_path: str|None = None):
         self.working_dir: Path = None
         self.filter_file: Path = Path(filter_file_path)
         self.filters: list[Filter] = self.configure(self._filter_file)
@@ -125,20 +125,22 @@ class Filesorter:
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
 
-    def configure(self, filter_file: Path) -> list[Filter]:
+    def configure(self, filter_file: Path) -> list[Filter]|None:
         filter_list = []
-        with open(filter_file, "r", encoding="utf=8") as config:
-            working_dir = Path(config.readline().strip())
-            if not working_dir.exists():
-                raise ValueError("First line is not a valid path")
-            else:
-                self.working_dir = working_dir
-            
-            for filter in config:
-                extracted = self.extract_filter(filter)
-                if extracted:
-                    filter_list.append(extracted)
-        return filter_list
+        if filter_file:
+            with open(filter_file, "r", encoding="utf=8") as config:
+                working_dir = Path(config.readline().strip())
+                if not working_dir.exists():
+                    raise ValueError("First line is not a valid path")
+                else:
+                    self.working_dir = working_dir
+                
+                for filter in config:
+                    extracted = self.extract_filter(filter)
+                    if extracted:
+                        filter_list.append(extracted)
+            return filter_list
+        return None
 
     def extract_filter(self, filter: str) -> Filter | None:
         content = filter.strip().split("|||")
