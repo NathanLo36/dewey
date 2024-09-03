@@ -1,6 +1,7 @@
 import filesorter as fs
 import customtkinter as ctk
 from tkinter import filedialog
+from pathlib import Path
 
 
 def main():
@@ -14,7 +15,7 @@ if __name__ == "__main__":
 
     filter_file = filedialog.askopenfilename()
 
-    if filter_file:
-        fs1 = fs.Filesorter(filter_file)
-        fs1.sort()
-        fs1.print_conflicts()
+    fs1 = fs.Filesorter()
+    fs1.configure(filter_file)
+    fs1.sort()
+    fs1.print_conflicts()
