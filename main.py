@@ -1,5 +1,5 @@
 import filesorter as fs
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import filedialog
 
 
@@ -9,12 +9,12 @@ def main():
 if __name__ == "__main__":
     # filter_file = input("Enter filter file path: ")
 
-    root = tk.Tk()
+    root = ctk.CTk()
     root.withdraw()
 
     filter_file = filedialog.askopenfilename()
-    fs1 = fs.Filesorter(filter_file)
-    fs1.sort()
-    fs1.print_conflicts()
 
-    input("Press enter to close.")
+    if filter_file:
+        fs1 = fs.Filesorter(filter_file)
+        fs1.sort()
+        fs1.print_conflicts()
