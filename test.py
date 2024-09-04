@@ -1,5 +1,4 @@
 import os
-import filesorter as fs
 from pathlib import Path
 import shutil
 from gui import App
