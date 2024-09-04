@@ -2,6 +2,7 @@ import os
 import filesorter as fs
 from pathlib import Path
 import shutil
+from gui import App
 
 
 def create_file(name: str) -> None:
@@ -28,15 +29,23 @@ def main():
 
     os.chdir(test_dir)
 
+    #should end up in folder1
     create_file("test1.txt")
-    create_file("test2.txt")
     create_file("test12.txt")
     create_file("test1-2.txt")
+
+    # should end up in folder 2
+    create_file("test2.txt")
     create_file("test2-3.txt")
+
+    #should create a conflict
     create_file("test2-test3.txt")
-    create_file("test_filters.txt")
+
+    # should end up in folder 5
     create_file("test6_test5.txt")
     create_file("test6.txt")
+
+    #should end up in folder 6
     create_file("TeSt78A.txt")
 
     create_dir("folder1")
@@ -46,6 +55,7 @@ def main():
     create_dir("folder5")
     create_dir("folder6")
 
+    create_file("test_filters.txt")
 
     with open((test_dir / "test_filters.txt").resolve(), "w") as test_filter:
         test_filter.write(f"{test_dir}\n\n")
@@ -59,13 +69,8 @@ def main():
 
     input("Files created. Press enter to start sorting")
 
-    filter_file = test_dir / "test_filters.txt"
-
-
-    fs1 = fs.Filesorter(filter_file)
-    fs1.sort()
-    fs1.print_conflicts()
-
+    app = App()
+    app.mainloop()
 
 if __name__ == "__main__":
     main()
