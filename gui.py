@@ -9,8 +9,11 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("dewey Filesorter")
-        # app.geometry("400x150")
+        self.geometry("1280x720")
         self.fs1 = fs.Filesorter()
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
         # buttons
         self.filter_file_select_button = ctk.CTkButton(self, text="Select Filter File", command=self.select_filter_file_button_callback)
@@ -25,7 +28,8 @@ class App(ctk.CTk):
         #log text box
         self.log_box = ctk.CTkTextbox(self)
         self.log_box.insert("0.0", "Log box to be added here")
-        self.log_box.grid(row = 0, column = 0,)
+        self.log_box.configure(state="disabled") #makes it read only
+        self.log_box.grid(row = 0, column = 0, sticky="NSEW")
 
     def select_filter_file_button_callback(self):
         filter_file = Path(ctk.filedialog.askopenfilename())

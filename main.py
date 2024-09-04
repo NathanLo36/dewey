@@ -13,7 +13,7 @@ if __name__ == "__main__":
     root = ctk.CTk()
     root.withdraw()
 
-    filter_file = filedialog.askopenfilename()
+    filter_file = Path(filedialog.askopenfilename())
 
     fs1 = fs.Filesorter()
     fs1.configure(filter_file)

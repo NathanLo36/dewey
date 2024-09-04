@@ -144,6 +144,7 @@ class Filesorter:
                     if extracted:
                         filter_list.append(extracted)
                         self.filters.append(extracted)
+                print("Configuration successful")
         else:
             print("Filter file not selected")
 
