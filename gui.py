@@ -21,7 +21,7 @@ class App(ctk.CTk):
 
         self.current_filter_file = ctk.CTkTextbox(self.file_info_frame, height=20)
         self.current_filter_file.grid(row = 0, column = 0, sticky="NSEW")
-        self.current_filter_file.insert("0.0", "Current filter file to be added here")
+        self.current_filter_file.insert("0.0", "Current filter file")
         self.current_filter_file.configure(state="disabled") #makes it read only
 
         # buttons
@@ -36,7 +36,6 @@ class App(ctk.CTk):
 
         #log text box
         self.log_box = ctk.CTkTextbox(self)
-        self.log_box.insert("0.0", "Log box to be added here")
         self.log_box.configure(state="disabled")
         self.log_box.grid(row = 0, column = 0, sticky="NSEW")
 
