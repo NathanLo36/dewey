@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import util.filesorter as fs
+from ..util.filesorter import Filesorter
 from pathlib import Path
 
 
@@ -10,10 +10,10 @@ class App(ctk.CTk):
         super().__init__()
         self.title("dewey Filesorter")
         self.geometry("1280x720")
-        self.fs1 = fs.Filesorter()
+        self.fs1 = Filesorter()
 
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=5)
+        self.grid_rowconfigure(0, weight=2)
 
         self.file_info_frame = ctk.CTkFrame(self)
         self.file_info_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nswe")
