@@ -13,14 +13,20 @@ class App(ctk.CTk):
         self.fs1 = fs.Filesorter()
 
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=5)
 
-        self.file_info_frame = ctk.CTk.frame(master=self)
-        self.file_info_frame.grid(row=0, column=0, padx=20)
+        self.file_info_frame = ctk.CTkFrame(self)
+        self.file_info_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nswe")
+        self.file_info_frame.columnconfigure(0, weight=1)
+
+        self.current_filter_file = ctk.CTkTextbox(self.file_info_frame, height=20)
+        self.current_filter_file.grid(row = 0, column = 0, sticky="NSEW")
+        self.current_filter_file.insert("0.0", "Current filter file to be added here")
+        self.current_filter_file.configure(state="disabled") #makes it read only
 
         # buttons
-        self.filter_file_select_button = ctk.CTkButton(self, text="Select Filter File", command=self.select_filter_file_button_callback)
-        self.filter_file_select_button.grid(row = 1, column = 0, padx = 20, pady = 20)
+        self.filter_file_select_button = ctk.CTkButton(self.file_info_frame, text="Select Filter File", command=self.select_filter_file_button_callback)
+        self.filter_file_select_button.grid(row = 0, column = 1, sticky="E")
 
         self.sort_button = ctk.CTkButton(self, text="Sort Files", command=self.sort_button_callback)
         self.sort_button.grid(row = 0, column = 1, padx = 20, pady = 20)
@@ -31,7 +37,7 @@ class App(ctk.CTk):
         #log text box
         self.log_box = ctk.CTkTextbox(self)
         self.log_box.insert("0.0", "Log box to be added here")
-        self.log_box.configure(state="disabled") #makes it read only
+        self.log_box.configure(state="disabled")
         self.log_box.grid(row = 0, column = 0, sticky="NSEW")
 
     def select_filter_file_button_callback(self):
