@@ -12,11 +12,11 @@
 
 ### In Progress
 
-- [ ] Create GUI  
 - [ ] Implement logging  
 
 ### Done ✓
 
+- [x] Create GUI  
 - [x] Implement Windows file selector
 - [x] Implement "*" for case insensitivity
 - [x] figure out filter sorting method  
