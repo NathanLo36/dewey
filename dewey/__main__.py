@@ -1,4 +1,4 @@
-import filesorter as fs
+from .util import filesorter as fs
 import customtkinter as ctk
 from tkinter import filedialog
 from pathlib import Path

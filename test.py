@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import shutil
-from gui import App
+from dewey.gui import App
 
 
 def create_file(name: str) -> None:

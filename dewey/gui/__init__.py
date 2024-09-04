@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import filesorter as fs
+import util.filesorter as fs
 from pathlib import Path
 
 
