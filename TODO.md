@@ -7,7 +7,6 @@
 
 ### Todo
 
-- [ ] venv setup  
 - [ ] Create mem efficient version  
 
 ### In Progress
@@ -16,6 +15,7 @@
 
 ### Done ✓
 
+- [x] venv setup  
 - [x] Create GUI  
 - [x] Implement Windows file selector
 - [x] Implement "*" for case insensitivity
