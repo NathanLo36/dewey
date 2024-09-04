@@ -15,6 +15,9 @@ class App(ctk.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
+        self.file_info_frame = ctk.CTk.frame(master=self)
+        self.file_info_frame.grid(row=0, column=0, padx=20)
+
         # buttons
         self.filter_file_select_button = ctk.CTkButton(self, text="Select Filter File", command=self.select_filter_file_button_callback)
         self.filter_file_select_button.grid(row = 1, column = 0, padx = 20, pady = 20)
