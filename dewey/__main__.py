@@ -1,6 +1,4 @@
-from .util import filesorter as fs
 from .gui import App
-
 
 def main():
     app = App()
