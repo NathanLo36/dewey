@@ -5,8 +5,10 @@ from dataclasses import dataclass
 import logging.handlers
 import logging.config
 import json
-import os
+from os import makedirs
 
+LOGGING_CONFIG = "./dewey/util/logging_config.json"
+LOGS_DIRECTORY = "./dewey/logs"
 
 @dataclass(init=True)
 class Filter:
@@ -30,6 +32,15 @@ class Filesorter:
     def __init__(self, filter_file_path: str = ""):
         self.working_dir: Path = None
 
+        if not Path(LOGS_DIRECTORY).is_dir():
+            makedirs(LOGS_DIRECTORY)
+
+        with open(LOGGING_CONFIG) as f_in:
+            logger_config = json.load(f_in)
+
+        logging.config.dictConfig(logger_config)
+        self.logger = logging.getLogger("Filesorter")
+
         self.filter_file: Path = Path(filter_file_path)
         self.filters: list[Filter] = []
         self.configure(self._filter_file)
@@ -37,11 +48,6 @@ class Filesorter:
         self.conflicts: list[Conflict] = []
         self.unresolved_moves: list[MoveAction] = []
 
-        self.logger = logging.getLogger("Filesorter")
-
-        with open("./dewey/util/logging_config.json") as f_in:
-            logger_config = json.load(f_in)
-        logging.config.dictConfig(logger_config)
 
     @property
     def unresolved_moves(self) -> list[MoveAction]:
@@ -139,7 +145,7 @@ class Filesorter:
 
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
-        self.logger(f"File {action.file_path} --> {action.to_path}")
+        self.logger.info(f"File {action.file_path} --> {action.to_path}")
 
     def configure(self, filter_file: Path) -> None:
         if filter_file != Path(""):
