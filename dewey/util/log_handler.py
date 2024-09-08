@@ -3,7 +3,7 @@ import customtkinter as ctk
 
 class LogHandler(logging.Handler):
     def __init__(self, text_widget: ctk.CTkTextbox):
-        super.__init__()
+        super().__init__()
         self.text_widget = text_widget
 
     def emit(self, record):

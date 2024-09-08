@@ -6,7 +6,7 @@ import logging.handlers
 import logging.config
 import json
 from os import makedirs
-from log_handler import LogHandler
+from .log_handler import LogHandler
 
 LOGGING_CONFIG = "./dewey/util/logging_config.json"
 LOGS_DIRECTORY = "./dewey/logs"
