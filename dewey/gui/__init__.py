@@ -22,7 +22,7 @@ class App(ctk.CTk):
         self.current_filter_file = ctk.CTkTextbox(self.file_info_frame, height=20)
         self.current_filter_file.grid(row = 0, column = 0, sticky="NSEW")
         self.current_filter_file.insert("0.0", "Current filter file")
-        self.current_filter_file.configure(state="disabled") #makes it read only
+        self.current_filter_file.configure(state="disabled")
 
         # buttons
         self.filter_file_select_button = ctk.CTkButton(self.file_info_frame, text="Select Filter File", command=self.select_filter_file_button_callback)
@@ -43,9 +43,21 @@ class App(ctk.CTk):
         filter_file = Path(ctk.filedialog.askopenfilename())
         self.fs1.configure(filter_file)
 
+        self.current_filter_file.configure(state="normal")
+        self.current_filter_file.delete("0.0", "end")
+        self.current_filter_file.insert("0.0", str(filter_file))
+        self.current_filter_file.configure(state="disabled")
+
     def sort_button_callback(self):
         if self.fs1:
             self.fs1.sort()
+        self.update_log_box()
+
+    def update_log_box(self):
+        self.log_box.configure(state="normal")
+        
+        self.log_box.configure(state="disabled")
+
 
 def main():
     app = App()

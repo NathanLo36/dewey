@@ -178,8 +178,8 @@ class Filesorter:
             return None
 
         if len(content) != 2: #too many separators
-            print("Warning: Incorrect format for filter " + str(filter))
-            self.logger.warning(f"Warning: Incorrect format for filter {str(filter)}")
+            print("Incorrect format for filter " + str(filter))
+            self.logger.warning(f"Incorrect format for filter {str(filter)}")
             return None
 
         keywords = content[0].split(",")
@@ -187,6 +187,6 @@ class Filesorter:
         if folder.exists():
             return Filter(keywords, folder)
         else:
-            print("Warning: Directory " + str(folder) + " does not exist")
-            self.logger.warning("Warning: Directory " + str(folder) + " does not exist")
+            print("Directory " + str(folder) + " does not exist")
+            self.logger.warning("Directory " + str(folder) + " does not exist")
             return None
