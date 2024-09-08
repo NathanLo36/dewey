@@ -2,6 +2,10 @@ from shutil import move
 from shutil import Error as shutilError
 from pathlib import Path
 from dataclasses import dataclass
+import logging.handlers
+import logging.config
+import json
+import os
 
 
 @dataclass(init=True)
@@ -32,6 +36,12 @@ class Filesorter:
         
         self.conflicts: list[Conflict] = []
         self.unresolved_moves: list[MoveAction] = []
+
+        self.logger = logging.getLogger("Filesorter")
+
+        with open("./dewey/util/logging_config.json") as f_in:
+            logger_config = json.load(f_in)
+        logging.config.dictConfig(logger_config)
 
     @property
     def unresolved_moves(self) -> list[MoveAction]:
@@ -76,6 +86,7 @@ class Filesorter:
     def find_moves(self) -> None:
         if len(self._filters) == 0:
             print("No filters found in file")
+            self.logger.warning("No filters found in file")
             return
 
         files = self._working_dir.glob("*.*")
@@ -97,6 +108,7 @@ class Filesorter:
                 self.move_file(self.unresolved_moves[0])
             except shutilError:
                 print(f"Could not move {self.unresolved_moves[0].file_path}")
+                self.logger.warning(f"Could not move {self.unresolved_moves[0].file_path}")
                 pass
             self.unresolved_moves.pop(0)
 
@@ -127,6 +139,7 @@ class Filesorter:
 
     def move_file(self, action: MoveAction):
         move(action.file_path, action.to_path)
+        self.logger(f"File {action.file_path} --> {action.to_path}")
 
     def configure(self, filter_file: Path) -> None:
         if filter_file != Path(""):
@@ -135,6 +148,7 @@ class Filesorter:
             with open(filter_file, "r", encoding="utf=8") as config:
                 working_directory = Path(config.readline().strip())
                 if not working_directory.exists():
+                    self.logger.warning("First line does not contain an existing directory")
                     raise ValueError("First line does not contain an existing directory")
                 else:
                     self.working_dir = working_directory
@@ -144,9 +158,12 @@ class Filesorter:
                     if extracted:
                         filter_list.append(extracted)
                         self.filters.append(extracted)
-                print("Configuration successful")
+                print(f"Configuration successful using {filter_file}")
+                self.logger.info(f"Configuration using {filter_file}")
         else:
             print("Filter file not selected")
+            self.logger.info("Filter file not selected")
+
 
     def extract_filter(self, filter: str) -> Filter | None:
         content = filter.strip().split("|||")
@@ -156,6 +173,7 @@ class Filesorter:
 
         if len(content) != 2: #too many separators
             print("Warning: Incorrect format for filter " + str(filter))
+            self.logger.warning(f"Warning: Incorrect format for filter {str(filter)}")
             return None
 
         keywords = content[0].split(",")
@@ -164,4 +182,5 @@ class Filesorter:
             return Filter(keywords, folder)
         else:
             print("Warning: Directory " + str(folder) + " does not exist")
+            self.logger.warning("Warning: Directory " + str(folder) + " does not exist")
             return None
