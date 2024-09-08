@@ -4,7 +4,7 @@
     "formatters":{
         "simple": {
             "format": "%(asctime)s | %(levelname)s: %(message)s",
-            "datefmt": "%c"
+            "datefmt": "%Y-%m-%d %H:%M:%S %z"
         }
     },
     "handlers":{
@@ -21,6 +21,11 @@
             "filename": "dewey/logs/filesorter.log",
             "maxBytes": 10000,
             "backupCount": 3
+        },
+        "gui":{
+            "class": "log_handler.LogHandler",
+            "level": "INFO",
+            "formatter": "simple"
         }
     },
     "loggers": {

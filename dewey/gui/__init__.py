@@ -1,19 +1,17 @@
 import customtkinter as ctk
-from ..util.filesorter import Filesorter
 from pathlib import Path
-
-
-filter_file = ""
+from ..util.filesorter import Filesorter
+from ..util.log_handler import LogHandler
 
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("dewey Filesorter")
-        self.geometry("1280x720")
-        self.fs1 = Filesorter()
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=2)
+
+        self.title("dewey Filesorter")
+        self.geometry("1280x720")
 
         self.file_info_frame = ctk.CTkFrame(self)
         self.file_info_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nswe")
@@ -38,6 +36,10 @@ class App(ctk.CTk):
         self.log_box = ctk.CTkTextbox(self)
         self.log_box.configure(state="disabled")
         self.log_box.grid(row = 0, column = 0, sticky="NSEW")
+
+        self.log_handler = LogHandler(self.log_box)
+
+        self.fs1 = Filesorter()
 
     def select_filter_file_button_callback(self):
         filter_file = Path(ctk.filedialog.askopenfilename())

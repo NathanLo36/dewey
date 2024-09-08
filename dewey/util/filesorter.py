@@ -6,6 +6,7 @@ import logging.handlers
 import logging.config
 import json
 from os import makedirs
+from log_handler import LogHandler
 
 LOGGING_CONFIG = "./dewey/util/logging_config.json"
 LOGS_DIRECTORY = "./dewey/logs"
@@ -29,8 +30,10 @@ class Conflict:
 
 
 class Filesorter:
-    def __init__(self, filter_file_path: str = ""):
+    def __init__(self, filter_file_path: str = "", log_handler: logging.Handler | None = None):
         self.working_dir: Path = None
+
+        self.log_handler: logging.Handler | None = log_handler
 
         if not Path(LOGS_DIRECTORY).is_dir():
             makedirs(LOGS_DIRECTORY)
@@ -91,7 +94,6 @@ class Filesorter:
 
     def find_moves(self) -> None:
         if len(self._filters) == 0:
-            print("No filters found in file")
             self.logger.warning("No filters found in file")
             return
 
@@ -113,7 +115,6 @@ class Filesorter:
             try:
                 self.move_file(self.unresolved_moves[0])
             except shutilError:
-                print(f"Could not move {self.unresolved_moves[0].file_path}")
                 self.logger.warning(f"Could not move {self.unresolved_moves[0].file_path}")
                 pass
             self.unresolved_moves.pop(0)
@@ -164,8 +165,7 @@ class Filesorter:
                     if extracted:
                         filter_list.append(extracted)
                         self.filters.append(extracted)
-                print(f"Configuration successful using {filter_file}")
-                self.logger.info(f"Configuration using {filter_file}")
+                self.logger.info(f"Configuration successful using {filter_file}")
         else:
             print("Filter file not selected")
             self.logger.info("Filter file not selected")
@@ -178,7 +178,6 @@ class Filesorter:
             return None
 
         if len(content) != 2: #too many separators
-            print("Incorrect format for filter " + str(filter))
             self.logger.warning(f"Incorrect format for filter {str(filter)}")
             return None
 
@@ -187,6 +186,8 @@ class Filesorter:
         if folder.exists():
             return Filter(keywords, folder)
         else:
-            print("Directory " + str(folder) + " does not exist")
             self.logger.warning("Directory " + str(folder) + " does not exist")
             return None
+
+    def configure_logger(self, logHandler: logging.Handler):
+        self.log_han
