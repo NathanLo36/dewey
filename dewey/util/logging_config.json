@@ -3,7 +3,8 @@
     "disable_existing_loggers": false,
     "formatters":{
         "simple": {
-            "format": "%(levelname)s: %(message)s"
+            "format": "%(asctime)s | %(levelname)s: %(message)s",
+            "datefmt": "%c"
         }
     },
     "handlers":{
