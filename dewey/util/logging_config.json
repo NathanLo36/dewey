@@ -19,7 +19,7 @@
             "level": "INFO",
             "formatter": "simple",
             "filename": "dewey/logs/filesorter.log",
-            "maxBytes": 10000,
+            "maxBytes": 5000000,
             "backupCount": 3
         }
     },
