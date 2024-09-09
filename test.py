@@ -58,13 +58,13 @@ def main():
 
     with open((test_dir / "test_filters.txt").resolve(), "w") as test_filter:
         test_filter.write(f"{test_dir}\n\n")
-        test_filter.write("test1|||folder1\n")
+        test_filter.write(f"test1|||{test_dir}\\folder1\n")
         test_filter.write("Subtitle test\n")
-        test_filter.write("test2|||folder2\n")
-        test_filter.write("test3|||folder3\n")
-        test_filter.write("test4|||folder4\n")
-        test_filter.write("test5,test6|||folder5\n")
-        test_filter.write("*tEsT7|||folder6\n")
+        test_filter.write(f"test2|||{test_dir}\\folder2\n")
+        test_filter.write(f"test3|||{test_dir}\\folder3\n")
+        test_filter.write(f"test4|||{test_dir}\\folder4\n")
+        test_filter.write(f"test5,test6|||{test_dir}\\folder5\n")
+        test_filter.write(f"*tEsT7|||{test_dir}\\folder6\n")
 
     input("Files created. Press enter to start sorting")
 

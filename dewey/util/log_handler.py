@@ -6,6 +6,6 @@ class LogHandler(logging.Handler):
         super().__init__()
         self.text_widget = text_widget
 
-    def emit(self, record):
+    def emit(self, record: str):
         log_message = self.format(record)
         self.text_widget.insert("end", log_message + "\n")
