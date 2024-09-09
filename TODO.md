@@ -7,14 +7,13 @@
 
 ### Todo
 
-- [ ] Create mem efficient version  
 
 ### In Progress
-
-- [ ] Implement logging  
+- [ ] fix issue with non ascii characters stopping logs
 
 ### Done ✓
 
+- [x] Implement logging  
 - [x] venv setup  
 - [x] Create GUI  
 - [x] Implement Windows file selector
