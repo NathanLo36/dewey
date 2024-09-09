@@ -23,7 +23,7 @@
             "backupCount": 3
         },
         "gui":{
-            "class": "log_handler.LogHandler",
+            "class": "dewey.util.log_handler.LogHandler",
             "level": "INFO",
             "formatter": "simple"
         }

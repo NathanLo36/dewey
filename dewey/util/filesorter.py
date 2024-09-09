@@ -6,10 +6,10 @@ import logging.handlers
 import logging.config
 import json
 from os import makedirs
-from log_handler import LogHandler
+from .log_handler import LogHandler
 
-LOGGING_CONFIG = "./dewey/util/logging_config.json"
-LOGS_DIRECTORY = "./dewey/logs"
+LOGGING_CONFIG = Path(__file__).parent / "logging_config.json"
+LOGS_DIRECTORY = Path(__file__).parent.parent / "logs"
 
 @dataclass(init=True)
 class Filter:
