@@ -2,6 +2,7 @@ import customtkinter as ctk
 from pathlib import Path
 from ..util.filesorter import Filesorter
 from ..util.log_handler import LogHandler
+import logging
 
 class App(ctk.CTk):
     def __init__(self):
@@ -37,9 +38,11 @@ class App(ctk.CTk):
         self.log_box.configure(state="disabled")
         self.log_box.grid(row = 0, column = 0, sticky="NSEW")
 
-        self.log_handler = LogHandler(self.log_box)
+        log_handler = LogHandler(self.log_box)
+        log_handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s: %(message)s", "%Y-%m-%d %H:%M:%S %z"))
+        log_handler.setLevel("INFO")
 
-        self.fs1 = Filesorter()
+        self.fs1 = Filesorter(log_handler=log_handler)
 
     def select_filter_file_button_callback(self):
         filter_file = Path(ctk.filedialog.askopenfilename())
@@ -51,9 +54,12 @@ class App(ctk.CTk):
         self.current_filter_file.configure(state="disabled")
 
     def sort_button_callback(self):
+        self.log_box.configure(state="normal")
         if self.fs1:
             self.fs1.sort()
         self.update_log_box()
+        self.log_box.configure(state="disabled")
+
 
     def update_log_box(self):
         self.log_box.configure(state="normal")

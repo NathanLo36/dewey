@@ -43,6 +43,8 @@ class Filesorter:
 
         logging.config.dictConfig(logger_config)
         self.logger = logging.getLogger("Filesorter")
+        self.logger.addHandler(log_handler)
+        
 
         self.filter_file: Path = Path(filter_file_path)
         self.filters: list[Filter] = []
@@ -188,6 +190,3 @@ class Filesorter:
         else:
             self.logger.warning("Directory " + str(folder) + " does not exist")
             return None
-
-    def configure_logger(self, logHandler: logging.Handler):
-        self.log_han
