@@ -6,7 +6,6 @@ import logging.handlers
 import logging.config
 import json
 from os import makedirs, listdir, remove
-from shutil import rmtree
 
 LOGGING_CONFIG = Path(__file__).parent / "logging_config.json"
 LOGS_DIRECTORY = Path(__file__).parent.parent / "logs"
