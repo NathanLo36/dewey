@@ -5,8 +5,8 @@ from dataclasses import dataclass
 import logging.handlers
 import logging.config
 import json
-from os import makedirs
-from .log_handler import LogHandler
+from os import makedirs, listdir, remove
+from shutil import rmtree
 
 LOGGING_CONFIG = Path(__file__).parent / "logging_config.json"
 LOGS_DIRECTORY = Path(__file__).parent.parent / "logs"
@@ -190,3 +190,11 @@ class Filesorter:
         else:
             self.logger.warning("Directory " + str(folder) + " does not exist")
             return None
+        
+    def clear_logs(self):
+        for file in listdir(Path(LOGS_DIRECTORY)):
+            file_path = Path(LOGS_DIRECTORY) / file
+            if file.startswith("filesorter.log."):
+                remove(file_path)
+            if Path(file_path) == Path(LOGS_DIRECTORY) / "filesorter.log":
+                open(file_path, 'w').close()
