@@ -1,8 +1,16 @@
 import customtkinter as ctk
 from pathlib import Path
-from ..util.filesorter import Filesorter
+from ..util.filesorter import Filesorter, Conflict
 from ..util.log_handler import LogHandler
 import logging
+
+class ConflictWindow(ctk.CTkToplevel):
+    def __init__(self):
+        super().__init__()
+        self.geometry("720x360")
+
+        self.label = ctk.CTkLabel(self, text="Conflicts")
+        self.label.pack(padx=20, pady=20)
 
 class App(ctk.CTk):
     def __init__(self):
@@ -41,6 +49,9 @@ class App(ctk.CTk):
         self.clear_logs_button = ctk.CTkButton(self.control_panel_frame, text="Clear logs", command = self.clear_logs)
         self.clear_logs_button.grid(row = 0, column = 0, padx = 0, pady = 0)
 
+        self.show_conflicts_button = ctk.CTkButton(self.control_panel_frame, text="Show conflicts", command = self.show_conflicts)
+
+
         self.quit_button = ctk.CTkButton(self, text="Quit", command=self.destroy)
         self.quit_button.grid(row = 1, column = 1, padx = 10, pady = 10)
 
@@ -77,3 +88,6 @@ class App(ctk.CTk):
         self.log_box.configure(state="normal")
         self.fs1.clear_logs()
         self.log_box.configure(state="disabled")
+
+    def show_conflicts(self):
+        conflicts = self.fs1.get_conflicts()

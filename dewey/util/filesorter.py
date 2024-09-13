@@ -121,13 +121,8 @@ class Filesorter:
                 pass
             self.unresolved_moves.pop(0)
 
-    def print_conflicts(self) -> None:
-        print("Unresolved conflicts:")
-        for action in self._conflicts:
-            print(f"{action.file_path} -> ", end="")
-            for folder in action.to_paths:
-                print(f"[{folder}]", end=" ")
-            print("\n")
+    def get_conflicts(self) -> None:
+        return self.conflicts
 
     def sort(self):
         self.find_moves()
