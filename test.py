@@ -66,10 +66,7 @@ def main():
         test_filter.write(f"test5,test6|||{test_dir}\\folder5\n")
         test_filter.write(f"*tEsT7|||{test_dir}\\folder6\n")
 
-    input("Files created. Press enter to start sorting")
-
-    app = App()
-    app.mainloop()
+    input("Files created in test folder, use dewey to sort.")
 
 if __name__ == "__main__":
     main()

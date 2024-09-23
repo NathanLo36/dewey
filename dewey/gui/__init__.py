@@ -5,12 +5,24 @@ from ..util.log_handler import LogHandler
 import logging
 
 class ConflictWindow(ctk.CTkToplevel):
-    def __init__(self):
+    def __init__(self, conflicts : list[Conflict]):
         super().__init__()
-        self.geometry("720x360")
+        self.geometry("1280x720")
 
-        self.label = ctk.CTkLabel(self, text="Conflicts")
-        self.label.pack(padx=20, pady=20)
+        self.title("Conflicts")
+        self.grid_columnconfigure(0, weight=2)
+        self.grid_rowconfigure(0, weight=2)
+
+
+        self.text = ctk.CTkTextbox(self)
+        self.text.grid(row = 0, column = 0, padx = 20, pady = 20, sticky="NSEW")
+
+        self.text.configure(state="normal")
+
+        for conflict in conflicts:
+            self.text.insert("end", str(conflict))
+            
+        self.text.configure(state="disabled")
 
 class App(ctk.CTk):
     def __init__(self):
@@ -21,6 +33,8 @@ class App(ctk.CTk):
 
         self.title("dewey Filesorter")
         self.geometry("1280x720")
+
+        self.conflict_window : None | ctk.CTkToplevel = None
 
         #filter file info and selection fram
         self.file_info_frame = ctk.CTkFrame(self)
@@ -44,13 +58,13 @@ class App(ctk.CTk):
         self.filter_file_select_button.grid(row = 0, column = 1, sticky="E")
 
         self.sort_button = ctk.CTkButton(self.control_panel_frame, text="Sort Files", command=self.sort_button_callback, height=50)
-        self.sort_button.grid(row = 1, column = 0, padx = 0, pady = 0, sticky="s")
+        self.sort_button.grid(row = 3, column = 0, padx = 0, pady = 0, sticky="s")
 
         self.clear_logs_button = ctk.CTkButton(self.control_panel_frame, text="Clear logs", command = self.clear_logs)
         self.clear_logs_button.grid(row = 0, column = 0, padx = 0, pady = 0)
 
         self.show_conflicts_button = ctk.CTkButton(self.control_panel_frame, text="Show conflicts", command = self.show_conflicts)
-
+        self.show_conflicts_button.grid(row = 1, column = 0, padx = 0, pady = 0)
 
         self.quit_button = ctk.CTkButton(self, text="Quit", command=self.destroy)
         self.quit_button.grid(row = 1, column = 1, padx = 10, pady = 10)
@@ -91,3 +105,7 @@ class App(ctk.CTk):
 
     def show_conflicts(self):
         conflicts = self.fs1.get_conflicts()
+        if self.conflict_window is not None and self.conflict_window.winfo_exists():
+            self.conflict_window.destroy()
+        self.conflict_window = ConflictWindow(conflicts)
+        self.conflict_window.focus()

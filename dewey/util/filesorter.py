@@ -27,6 +27,14 @@ class Conflict:
     file_path: Path
     to_paths: list[Path]
 
+    def __str__(self):
+        string = f"{self.file_path} ->"
+
+        for path in self.to_paths:
+            string += f"\n\t{path}"
+
+        return string
+
 
 class Filesorter:
     def __init__(self, filter_file_path: str = "", log_handler: logging.Handler | None = None):
@@ -100,6 +108,8 @@ class Filesorter:
 
         files = self._working_dir.glob("*.*")
 
+        self.conflicts.clear()
+
         for file in files:
             matching_folders = []
             for filter in self._filters:
@@ -120,7 +130,7 @@ class Filesorter:
                 pass
             self.unresolved_moves.pop(0)
 
-    def get_conflicts(self) -> None:
+    def get_conflicts(self) -> list[Conflict]:
         return self.conflicts
 
     def sort(self):
