@@ -1,4 +1,7 @@
 import customtkinter as ctk
+import platform
+from os import startfile
+import subprocess
 from pathlib import Path
 from ..util.filesorter import Filesorter, Conflict
 from ..util.log_handler import LogHandler
@@ -12,7 +15,6 @@ class ConflictWindow(ctk.CTkToplevel):
         self.title("Conflicts")
         self.grid_columnconfigure(0, weight=2)
         self.grid_rowconfigure(0, weight=2)
-
 
         self.text = ctk.CTkTextbox(self)
         self.text.grid(row = 0, column = 0, padx = 20, pady = 20, sticky="NSEW")
@@ -66,6 +68,9 @@ class App(ctk.CTk):
         self.show_conflicts_button = ctk.CTkButton(self.control_panel_frame, text="Show conflicts", command = self.show_conflicts)
         self.show_conflicts_button.grid(row = 1, column = 0, padx = 0, pady = 0)
 
+        self.open_logs_button = ctk.CTkButton(self.control_panel_frame, text="Open logs", command = self.open_logs)
+        self.open_logs_button.grid(row = 2, column = 0, padx = 0, pady = 0)
+
         self.quit_button = ctk.CTkButton(self, text="Quit", command=self.destroy)
         self.quit_button.grid(row = 1, column = 1, padx = 10, pady = 10)
 
@@ -109,3 +114,16 @@ class App(ctk.CTk):
             self.conflict_window.destroy()
         self.conflict_window = ConflictWindow(conflicts)
         self.conflict_window.focus()
+    
+    def open_logs(self):
+        try:
+            if platform.system() == "Windows":
+                # Use os.startfile for Windows
+                subprocess.run(["explorer", Path(__file__).parent.parent / "logs"])
+            elif platform.system() == "Linux":
+                # Use xdg-open for Linux
+                subprocess.run(["xdg-open", Path(__file__).parent.parent / "logs"])
+            else:
+                print("Unsupported operating system.")
+        except subprocess.CalledProcessError:
+            print("Error opening file explorer.")
