@@ -1,6 +1,5 @@
 import customtkinter as ctk
 import platform
-from os import startfile
 import subprocess
 from pathlib import Path
 from ..util.filesorter import Filesorter, Conflict
