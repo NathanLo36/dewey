@@ -38,4 +38,17 @@ Folders should be stored as absolute directories in the config file.
 
 If multiple keywords for multiple folders exist in the file name, the user shall be informed and the file will not be moved.
 
-Folders will not be moved. The filter file currently in use will not be moved.
+Folders will not be moved. The filter file currently in use will not be moved, if it resides in the directory to be sorted.
+
+### GUI Guide
+
+The top left of the GUI contains a textbox that will display the logs created during the current session. This will include information on all file movements, and errors.
+
+Below this, the path of the current config file is displayed, and to the right, there is a button which opens a dialog that will allow the user to select the config file.
+
+The right side contains multiple buttons.
+The "Open Logs" buttons will open the file directory containing the log files.
+The "Clear Logs" button will delete all logs.
+The "Show Conflicts" button will open a separate window showing all conflicts from the last attempted sort.
+The "Sort Files" button will sort files according to the spec above, using the currently selected config file.
+The "Quit" button will close the program.
