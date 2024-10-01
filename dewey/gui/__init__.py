@@ -46,8 +46,9 @@ class App(ctk.CTk):
         #control panel frame
         self.control_panel_frame = ctk.CTkFrame(self)
         self.control_panel_frame.grid(row = 0, column = 1, padx = 20, pady = 20, sticky="nsew")
-        self.control_panel_frame.grid_rowconfigure(0, weight=10)
-        self.control_panel_frame.grid_rowconfigure(1, weight=1)
+        self.control_panel_frame.grid_rowconfigure(0, weight=0)
+        self.control_panel_frame.grid_rowconfigure(1, weight=0)
+        self.control_panel_frame.grid_rowconfigure(2, weight=5)
 
         #current filter file text box
         self.current_filter_file = ctk.CTkTextbox(self.file_info_frame, height=20)
@@ -62,14 +63,14 @@ class App(ctk.CTk):
         self.sort_button = ctk.CTkButton(self.control_panel_frame, text="Sort Files", command=self.sort_button_callback, height=50)
         self.sort_button.grid(row = 3, column = 0, padx = 0, pady = 0, sticky="s")
 
-        self.clear_logs_button = ctk.CTkButton(self.control_panel_frame, text="Clear logs", command = self.clear_logs)
-        self.clear_logs_button.grid(row = 0, column = 0, padx = 0, pady = 0)
+        self.clear_logs_button = ctk.CTkButton(self.control_panel_frame, text="Clear logs", command = self.clear_logs, height=50)
+        self.clear_logs_button.grid(row = 1, column = 0, padx = 0, pady = 0, sticky="n")
 
-        self.show_conflicts_button = ctk.CTkButton(self.control_panel_frame, text="Show conflicts", command = self.show_conflicts)
-        self.show_conflicts_button.grid(row = 1, column = 0, padx = 0, pady = 0)
+        self.show_conflicts_button = ctk.CTkButton(self.control_panel_frame, text="Show conflicts", command = self.show_conflicts, height=50)
+        self.show_conflicts_button.grid(row = 2, column = 0, padx = 0, pady = 0)
 
-        self.open_logs_button = ctk.CTkButton(self.control_panel_frame, text="Open logs", command = self.open_logs)
-        self.open_logs_button.grid(row = 2, column = 0, padx = 0, pady = 0)
+        self.open_logs_button = ctk.CTkButton(self.control_panel_frame, text="Open logs", command = self.open_logs, height=50)
+        self.open_logs_button.grid(row = 0, column = 0, padx = 0, pady = 0, sticky="n")
 
         self.quit_button = ctk.CTkButton(self, text="Quit", command=self.destroy)
         self.quit_button.grid(row = 1, column = 1, padx = 10, pady = 10)
