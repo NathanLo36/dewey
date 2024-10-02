@@ -113,6 +113,7 @@ class App(ctk.CTk):
         if self.conflict_window is not None and self.conflict_window.winfo_exists():
             self.conflict_window.destroy()
         self.conflict_window = ConflictWindow(conflicts)
+        self.conflict_window.update()
         self.conflict_window.focus()
     
     def open_logs(self):
