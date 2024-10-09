@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import logging.handlers
 import logging.config
 import json
-from os import makedirs, listdir, remove
+from os import listdir, remove
 
 LOGGING_CONFIG = Path(__file__).parent / "logging_config.json"
 LOGS_DIRECTORY = Path(".") / "dewey_logs"
