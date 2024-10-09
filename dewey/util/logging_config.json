@@ -18,7 +18,7 @@
             "class": "logging.handlers.RotatingFileHandler",
             "level": "INFO",
             "formatter": "simple",
-            "filename": "dewey/logs/filesorter.log",
+            "filename": "dewey_logs/filesorter.log",
             "encoding" : "utf-8",
             "maxBytes": 5000000,
             "backupCount": 3

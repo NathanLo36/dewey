@@ -8,7 +8,7 @@ import json
 from os import makedirs, listdir, remove
 
 LOGGING_CONFIG = Path(__file__).parent / "logging_config.json"
-LOGS_DIRECTORY = Path(__file__).parent.parent / "logs"
+LOGS_DIRECTORY = Path(".") / "dewey_logs"
 
 @dataclass(init=True)
 class Filter:
@@ -42,8 +42,7 @@ class Filesorter:
 
         self.log_handler: logging.Handler | None = log_handler
 
-        if not Path(LOGS_DIRECTORY).is_dir():
-            makedirs(LOGS_DIRECTORY)
+        LOGS_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
         with open(LOGGING_CONFIG) as f_in:
             logger_config = json.load(f_in)

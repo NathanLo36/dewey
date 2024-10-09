@@ -1,4 +1,4 @@
-from .gui import App
+from dewey.gui import App
 
 def main():
     app = App()

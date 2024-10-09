@@ -2,8 +2,8 @@ import customtkinter as ctk
 import platform
 import subprocess
 from pathlib import Path
-from ..util.filesorter import Filesorter, Conflict
-from ..util.log_handler import LogHandler
+from dewey.util.filesorter import Filesorter, Conflict, LOGS_DIRECTORY
+from dewey.util.log_handler import LogHandler
 import logging
 
 class ConflictWindow(ctk.CTkToplevel):
@@ -120,10 +120,10 @@ class App(ctk.CTk):
         try:
             if platform.system() == "Windows":
                 # Use os.startfile for Windows
-                subprocess.run(["explorer", Path(__file__).parent.parent / "logs"])
+                subprocess.run(["explorer", LOGS_DIRECTORY])
             elif platform.system() == "Linux":
                 # Use xdg-open for Linux
-                subprocess.run(["xdg-open", Path(__file__).parent.parent / "logs"])
+                subprocess.run(["xdg-open", LOGS_DIRECTORY])
             else:
                 print("Unsupported operating system.")
         except subprocess.CalledProcessError:
