@@ -9,10 +9,12 @@
 
 
 ### In Progress
-- [ ] fix issue with non ascii characters stopping logs
+- [ ] add MacOS support for open logs button
+- [ ] github releases
 
 ### Done ✓
 
+- [x] fix issue with non ascii characters stopping logs
 - [x] Implement logging  
 - [x] venv setup  
 - [x] Create GUI  
