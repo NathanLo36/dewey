@@ -1,0 +1,1 @@
+pyinstaller --onefile --windowed --add-data "dewey/util/logging_config.json:dewey/util" main.py
