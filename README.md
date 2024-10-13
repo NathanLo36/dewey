@@ -48,7 +48,6 @@ The top left of the GUI contains a textbox that will display the logs created du
 
 Below this, the path of the current config file is displayed, and to the right, there is a button which opens a dialog that will allow the user to select the config file.
 
-The right side contains multiple buttons.
 The "Open Logs" buttons will open the file directory containing the log files.
 The "Clear Logs" button will delete all logs.
 The "Show Conflicts" button will open a separate window showing all conflicts from the last attempted sort.
