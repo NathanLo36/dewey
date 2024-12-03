@@ -127,7 +127,8 @@ class App(ctk.CTk):
 
   def clear_logs(self):
     self.log_box.configure(state="normal")
-    self.fs1.clear_logs()
+    if self.fs1:
+      self.fs1.clear_logs()
     self.log_box.configure(state="disabled")
 
   def show_conflicts(self):
@@ -147,6 +148,6 @@ class App(ctk.CTk):
         # Use xdg-open for Linux
         subprocess.run(["xdg-open", LOGS_DIRECTORY])
       else:
-        print("Unsupported operating system.")
+        print("Unsupported operating system. Please open logs firectory manually.")
     except subprocess.CalledProcessError:
       print("Error opening file explorer.")

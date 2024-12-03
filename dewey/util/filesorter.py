@@ -60,6 +60,7 @@ class Filesorter:
 
     self.conflicts: list[Conflict] = []
     self.unresolved_moves: list[MoveAction] = []
+    self.unresolvable_moves: list[MoveAction] = []
 
   @property
   def unresolved_moves(self) -> list[MoveAction]:
@@ -127,7 +128,7 @@ class Filesorter:
         self.move_file(self.unresolved_moves[0])
       except shutilError:
         self.logger.warning(f"Could not move {self.unresolved_moves[0].file_path}")
-        pass
+        self.unresolvable_moves.append(self.unresolved_moves[0])
       self.unresolved_moves.pop(0)
 
   def get_conflicts(self) -> list[Conflict]:
