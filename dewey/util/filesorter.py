@@ -9,6 +9,7 @@ from os import listdir, remove
 
 LOGGING_CONFIG = Path(__file__).parent / "logging_config.json"
 LOGS_DIRECTORY = Path(".") / "dewey_logs"
+STORED_FILTER_FILE = LOGS_DIRECTORY / "filter_file.txt"
 
 
 @dataclass(init=True)
@@ -36,10 +37,9 @@ class Conflict:
 
     return string
 
-
 class Filesorter:
   def __init__(
-    self, filter_file_path: str = "", log_handler: logging.Handler | None = None
+    self, log_handler: logging.Handler | None = None
   ):
     self.working_dir: Path = None
 
@@ -54,7 +54,7 @@ class Filesorter:
     self.logger = logging.getLogger("Filesorter")
     self.logger.addHandler(log_handler)
 
-    self.filter_file: Path = Path(filter_file_path)
+    self.filter_file: Path | None = None
     self.filters: list[Filter] = []
     self.configure(self._filter_file)
 
@@ -157,10 +157,12 @@ class Filesorter:
 
   def configure(self, filter_file: Path) -> bool:
     if (filter_file is not None):
+      self.filter_file = filter_file
       self.filters.clear()
       filter_list = []
       try:
-        with open(filter_file, "r", encoding="utf=8") as config:
+        print(filter_file)
+        with open(filter_file, "r", encoding="utf-8") as config:
           working_directory = Path(config.readline().strip())
           if not working_directory.exists():
             self.logger.warning("First line does not contain an existing directory")
@@ -177,22 +179,21 @@ class Filesorter:
           return True
       except (PermissionError, FileNotFoundError):
         self.logger.info("Error with stored filter file or none present")
-        p = LOGS_DIRECTORY / "filter_file.txt"
-        p.write_text("")
         return False
     else:
       self.logger.info("Filter file not selected")
       return False
 
   def save_directory(self, directory: Path) -> None:
-    p = LOGS_DIRECTORY / "filter_file.txt"
-    p.write_text(str(directory.resolve()))
+    p = STORED_FILTER_FILE
+    p.write_text(str(directory.resolve()), encoding="utf-8")
 
   def read_saved_filter_file(self) -> Path | None:
-    p = LOGS_DIRECTORY / "filter_file.txt"
+    p = STORED_FILTER_FILE
 
     try:
-      return Path(p.read_text())
+      text = Path(p.read_text(encoding="utf-8"))
+      return text
     except FileNotFoundError:
       return None
 
