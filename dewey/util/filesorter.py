@@ -155,27 +155,46 @@ class Filesorter:
     move(action.file_path, action.to_path)
     self.logger.info(f"File {action.file_path} --> {action.to_path}")
 
-  def configure(self, filter_file: Path) -> None:
-    if filter_file != Path(""):
+  def configure(self, filter_file: Path) -> bool:
+    if (filter_file is not None):
       self.filters.clear()
       filter_list = []
-      with open(filter_file, "r", encoding="utf=8") as config:
-        working_directory = Path(config.readline().strip())
-        if not working_directory.exists():
-          self.logger.warning("First line does not contain an existing directory")
-          raise ValueError("First line does not contain an existing directory")
-        else:
-          self.working_dir = working_directory
+      try:
+        with open(filter_file, "r", encoding="utf=8") as config:
+          working_directory = Path(config.readline().strip())
+          if not working_directory.exists():
+            self.logger.warning("First line does not contain an existing directory")
+            return False
+          else:
+            self.working_dir = working_directory
 
-        for filter in config:
-          extracted = self.extract_filter(filter)
-          if extracted:
-            filter_list.append(extracted)
-            self.filters.append(extracted)
-        self.logger.info(f"Configuration successful using {filter_file}")
+          for filter in config:
+            extracted = self.extract_filter(filter)
+            if extracted:
+              filter_list.append(extracted)
+              self.filters.append(extracted)
+          self.logger.info(f"Configuration successful using {filter_file}")
+          return True
+      except (PermissionError, FileNotFoundError):
+        self.logger.info("Error with stored filter file or none present")
+        p = LOGS_DIRECTORY / "filter_file.txt"
+        p.write_text("")
+        return False
     else:
-      print("Filter file not selected")
       self.logger.info("Filter file not selected")
+      return False
+
+  def save_directory(self, directory: Path) -> None:
+    p = LOGS_DIRECTORY / "filter_file.txt"
+    p.write_text(str(directory.resolve()))
+
+  def read_saved_filter_file(self) -> Path | None:
+    p = LOGS_DIRECTORY / "filter_file.txt"
+
+    try:
+      return Path(p.read_text())
+    except FileNotFoundError:
+      return None
 
   def extract_filter(self, filter: str) -> Filter | None:
     content = filter.strip().split("|||")

@@ -106,16 +106,27 @@ class App(ctk.CTk):
     log_handler.setLevel("INFO")
 
     self.fs1 = Filesorter(log_handler=log_handler)
+    self.select_filter_file(self.fs1.read_saved_filter_file())
 
   def select_filter_file_button_callback(self):
+    filter_file = Path(ctk.filedialog.askopenfilename())
+    self.select_filter_file(filter_file)
+
+  def select_filter_file(self, filter_file: Path):
     self.log_box.configure(state="normal")
     self.current_filter_file.configure(state="normal")
 
-    filter_file = Path(ctk.filedialog.askopenfilename())
-    self.fs1.configure(filter_file)
-
     self.current_filter_file.delete("0.0", "end")
-    self.current_filter_file.insert("0.0", str(filter_file))
+    if (filter_file is not None):
+      sucessful = self.fs1.configure(filter_file)
+      if sucessful:
+        self.fs1.save_directory(filter_file)
+        self.current_filter_file.insert("0.0", str(filter_file))
+      else:
+        self.current_filter_file.insert("0.0", "Please Select Filter File")
+    else:
+      self.current_filter_file.insert("0.0", "Please Select Filter File")
+
     self.current_filter_file.configure(state="disabled")
     self.log_box.configure(state="disabled")
 
