@@ -135,8 +135,22 @@ class Filesorter:
     return self.conflicts
 
   def sort(self):
-    self.find_moves()
-    self.resolve_moves()
+    files = self._working_dir.glob("*.*")
+
+    self.conflicts.clear()
+
+    for file in files:
+      matching_folders = []
+      for filter in self._filters:
+        if self.filter_check(file, filter):
+          matching_folders.append(filter.folder)
+
+      if len(matching_folders) == 1:
+        self.unresolved_moves.append(MoveAction(file, matching_folders[0]))
+        self.resolve_moves()
+      elif len(matching_folders) > 1:
+        self.conflicts.append(Conflict(file, matching_folders))
+
 
   def filter_check(self, file_path: Path, filter: Filter) -> bool:
     if file_path.resolve() == self._filter_file.resolve():
